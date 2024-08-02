@@ -14,3 +14,8 @@ pub type Button {
   Attack
   Use
 }
+
+pub type Redeemer {
+  Admin
+  Player(Cmd)
+}

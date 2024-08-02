@@ -2,6 +2,7 @@ use aiken/transaction/credential.{PaymentCredential}
 
 pub type GameData {
   is_over: Bool,
+  owner: PaymentCredential,
   admin: PaymentCredential,
   player: Player,
   monsters: List<MapObject>,

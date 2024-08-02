@@ -1,5 +1,18 @@
+use aiken/hash.{Blake2b_224, Hash}
+use aiken/list
+use aiken/transaction/credential.{
+  PaymentCredential, VerificationKey, VerificationKeyCredential,
+}
 use walking_skeleton/types/cmd.{Cmd}
 use walking_skeleton/types/game_state.{Dead, GameData, Live, Player, Reborn}
+
+pub fn is_signed_by_admin(
+  signatures: List<Hash<Blake2b_224, VerificationKey>>,
+  admin: PaymentCredential,
+) -> Bool {
+  expect VerificationKeyCredential(payment_credential) = admin
+  list.has(signatures, payment_credential)
+}
 
 pub fn is_legal_state_transition(
   old_state: GameData,
@@ -9,12 +22,14 @@ pub fn is_legal_state_transition(
   let GameData {
     is_over: old_is_over,
     admin: old_admin,
+    owner: old_owner,
     player: old_player,
     ..
   } = old_state
-  let GameData { admin: new_admin, player: new_player, .. } = new_state
+  let GameData { admin: new_admin, owner: new_owner, player: new_player, .. } =
+    new_state
 
-  if old_is_over || old_admin != new_admin {
+  if old_is_over || old_admin != new_admin || old_owner != new_owner {
     False
   } else {
     is_legal_player_transition(old_player, new_player, cmd)

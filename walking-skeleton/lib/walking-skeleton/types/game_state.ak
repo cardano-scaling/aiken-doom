@@ -13,6 +13,8 @@ pub type Player {
   player_state: PlayerState,
   map_object: MapObject,
   kill_count: Int,
+  secret_count: Int,
+  item_count: Int,
 }
 
 // subset of mobj_t from p_mobj.h:201

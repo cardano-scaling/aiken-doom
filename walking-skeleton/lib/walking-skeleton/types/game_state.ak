@@ -6,12 +6,19 @@ pub type GameData {
   admin: PaymentCredential,
   player: Player,
   monsters: List<MapObject>,
+  leveltime: List<Int>,
 }
 
-// subset of player_t from d_player.h:78
+// subset of player_t from d_player.h:78 (total_stats and level_stats are not in the original struct, but added for our needs)
 pub type Player {
   player_state: PlayerState,
   map_object: MapObject,
+  total_stats: Stats,
+  level_stats: Stats,
+}
+
+// another subset of player_t from d_player.h:78
+pub type Stats {
   kill_count: Int,
   secret_count: Int,
   item_count: Int,

@@ -9,6 +9,7 @@ use walking_skeleton/utils.{is_legal_state_transition, is_signed_by_admin}
 
 validator(max_distance_diff: Int) {
   fn spend(old_datum: GameData, redeemer: Redeemer, ctx: ScriptContext) -> Bool {
+    trace @"Hello, World!"
     let ScriptContext { transaction, purpose } = ctx
     let Transaction { extra_signatories, inputs, outputs, .. } = transaction
     when redeemer is {

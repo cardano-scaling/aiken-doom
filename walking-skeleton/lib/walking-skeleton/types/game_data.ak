@@ -1,4 +1,3 @@
-use aiken/cbor
 use aiken/transaction/credential.{PaymentCredential}
 
 pub type GameData {

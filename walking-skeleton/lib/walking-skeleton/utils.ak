@@ -81,14 +81,13 @@ fn is_legal_mobj_transition(
   let MapObject { position: old_position, .. } = old_mobj
   let MapObject { position: new_position, .. } = new_mobj
 
-  let Position { x: old_x, y: old_y, z: old_z } = old_position
-  let Position { x: new_x, y: new_y, z: new_z } = new_position
+  let Position { x: old_x, y: old_y, .. } = old_position
+  let Position { x: new_x, y: new_y, .. } = new_position
 
   let dx_squared = new_x - old_x |> math.pow(2)
   let dy_squared = new_y - old_y |> math.pow(2)
-  let dz_squared = new_z - old_z |> math.pow(2)
 
-  expect Some(difference) = math.sqrt(dx_squared + dy_squared + dz_squared)
+  expect Some(difference) = math.sqrt(dx_squared + dy_squared)
 
   trace cbor.diagnostic(difference)
   trace cbor.diagnostic(cmds_count * max_distance_diff)

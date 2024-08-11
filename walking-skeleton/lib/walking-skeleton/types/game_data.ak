@@ -1,3 +1,4 @@
+use aiken/cbor
 use aiken/transaction/credential.{PaymentCredential}
 
 pub type GameData {
@@ -16,6 +17,7 @@ pub type Player {
   map_object: MapObject,
   total_stats: Stats,
   level_stats: Stats,
+  cheats: Int,
 }
 
 // another subset of player_t from d_player.h:78
@@ -50,4 +52,5 @@ pub type LevelId {
   map: Int,
   skill: Int,
   episode: Int,
+  demoplayback: Bool,
 }

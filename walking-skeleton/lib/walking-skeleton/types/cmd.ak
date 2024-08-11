@@ -6,13 +6,13 @@ pub type Cmd {
   side_move: Int,
   // <<16 for angle delta
   angle_turn: Int,
-  chat_char: ByteArray,
-  buttons: ByteArray,
-  buttons2: ByteArray,
-  consistancy: ByteArray,
+  chat_char: Int,
+  buttons: Int,
+  buttons2: Int,
+  consistancy: Int,
   inventory: Int,
-  lookfly: ByteArray,
-  arti: ByteArray,
+  lookfly: Int,
+  arti: Int,
 }
 
 pub type Redeemer {

@@ -1,3 +1,4 @@
+use aiken/cbor
 use aiken/hash.{Blake2b_224, Hash}
 use aiken/list
 use aiken/math
@@ -5,7 +6,7 @@ use aiken/transaction/credential.{
   PaymentCredential, VerificationKey, VerificationKeyCredential,
 }
 use walking_skeleton/types/cmd.{Cmd}
-use walking_skeleton/types/game_state.{GameData, MapObject, Player, Position}
+use walking_skeleton/types/game_data.{GameData, MapObject, Player, Position}
 
 pub fn is_signed_by_admin(
   signatures: List<Hash<Blake2b_224, VerificationKey>>,
@@ -26,10 +27,16 @@ pub fn is_legal_state_transition(
     admin: old_admin,
     owner: old_owner,
     player: old_player,
+    level: old_level,
     ..
   } = old_state
-  let GameData { admin: new_admin, owner: new_owner, player: new_player, .. } =
-    new_state
+  let GameData {
+    admin: new_admin,
+    owner: new_owner,
+    player: new_player,
+    level: new_level,
+    ..
+  } = new_state
 
   if old_is_over || old_admin != new_admin || old_owner != new_owner {
     False
@@ -39,6 +46,7 @@ pub fn is_legal_state_transition(
       new_player,
       max_distance_diff,
       list.length(cmds),
+      old_level != new_level,
     )
   }
 }
@@ -48,11 +56,20 @@ fn is_legal_player_transition(
   new_player: Player,
   max_distance_diff: Int,
   cmds_count: Int,
+  map_change: Bool,
 ) -> Bool {
   let Player { map_object: old_mobj, .. } = old_player
   let Player { map_object: mew_mobj, .. } = new_player
 
-  is_legal_mobj_transition(old_mobj, mew_mobj, max_distance_diff, cmds_count)
+  trace @"map_change"
+  trace cbor.diagnostic(map_change)
+
+  map_change || is_legal_mobj_transition(
+    old_mobj,
+    mew_mobj,
+    max_distance_diff,
+    cmds_count,
+  )
 }
 
 fn is_legal_mobj_transition(
@@ -73,5 +90,7 @@ fn is_legal_mobj_transition(
 
   expect Some(difference) = math.sqrt(dx_squared + dy_squared + dz_squared)
 
+  trace cbor.diagnostic(difference)
+  trace cbor.diagnostic(cmds_count * max_distance_diff)
   difference < cmds_count * max_distance_diff
 }

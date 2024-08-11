@@ -1,3 +1,4 @@
+use aiken/cbor
 use aiken/transaction/credential.{PaymentCredential}
 
 pub type GameData {
@@ -7,6 +8,7 @@ pub type GameData {
   player: Player,
   monsters: List<MapObject>,
   leveltime: List<Int>,
+  level: LevelId,
 }
 
 // subset of player_t from d_player.h:78 (total_stats and level_stats are not in the original struct, but added for our needs)
@@ -42,4 +44,11 @@ pub type PlayerState {
   Live
   Dead
   Reborn
+}
+
+// custom type using free floating values from DOOM
+pub type LevelId {
+  map: Int,
+  skill: Int,
+  episode: Int,
 }

@@ -4,7 +4,7 @@ use aiken/transaction.{
 }
 use aiken/transaction/credential.{VerificationKeyCredential}
 use walking_skeleton/types/cmd.{Admin, Player, Redeemer}
-use walking_skeleton/types/game_state.{GameData}
+use walking_skeleton/types/game_data.{GameData}
 use walking_skeleton/utils.{is_legal_state_transition, is_signed_by_admin}
 
 validator(max_distance_diff: Int) {

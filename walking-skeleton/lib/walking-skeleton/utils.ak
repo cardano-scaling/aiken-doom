@@ -1,10 +1,11 @@
 use aiken/hash.{Blake2b_224, Hash}
 use aiken/list
+use aiken/math
 use aiken/transaction/credential.{
   PaymentCredential, VerificationKey, VerificationKeyCredential,
 }
 use walking_skeleton/types/cmd.{Cmd}
-use walking_skeleton/types/game_state.{Dead, GameData, Live, Player, Reborn}
+use walking_skeleton/types/game_state.{GameData, MapObject, Player, Position}
 
 pub fn is_signed_by_admin(
   signatures: List<Hash<Blake2b_224, VerificationKey>>,
@@ -17,7 +18,8 @@ pub fn is_signed_by_admin(
 pub fn is_legal_state_transition(
   old_state: GameData,
   new_state: GameData,
-  cmd: Cmd,
+  cmds: List<Cmd>,
+  max_distance_diff: Int,
 ) -> Bool {
   let GameData {
     is_over: old_is_over,
@@ -32,40 +34,44 @@ pub fn is_legal_state_transition(
   if old_is_over || old_admin != new_admin || old_owner != new_owner {
     False
   } else {
-    is_legal_player_transition(old_player, new_player, cmd)
+    is_legal_player_transition(
+      old_player,
+      new_player,
+      max_distance_diff,
+      list.length(cmds),
+    )
   }
 }
 
 fn is_legal_player_transition(
   old_player: Player,
   new_player: Player,
-  _cmd: Cmd,
+  max_distance_diff: Int,
+  cmds_count: Int,
 ) -> Bool {
-  let Player { player_state: old_state, .. } = old_player
-  let Player { player_state: new_state, .. } = new_player
+  let Player { map_object: old_mobj, .. } = old_player
+  let Player { map_object: mew_mobj, .. } = new_player
 
-  let is_legal_state_transition =
-    when old_state is {
-      Live ->
-        when new_state is {
-          Live -> True
-          Dead -> True
-          Reborn -> False
-        }
-      Dead ->
-        when new_state is {
-          Reborn -> True
-          Dead -> True
-          Live -> False
-        }
+  is_legal_mobj_transition(old_mobj, mew_mobj, max_distance_diff, cmds_count)
+}
 
-      Reborn ->
-        when new_state is {
-          Reborn -> True
-          Live -> True
-          Dead -> False
-        }
-    }
+fn is_legal_mobj_transition(
+  old_mobj: MapObject,
+  new_mobj: MapObject,
+  max_distance_diff: Int,
+  cmds_count: Int,
+) -> Bool {
+  let MapObject { position: old_position, .. } = old_mobj
+  let MapObject { position: new_position, .. } = new_mobj
 
-  is_legal_state_transition
+  let Position { x: old_x, y: old_y, z: old_z } = old_position
+  let Position { x: new_x, y: new_y, z: new_z } = new_position
+
+  let dx_squared = new_x - old_x |> math.pow(2)
+  let dy_squared = new_y - old_y |> math.pow(2)
+  let dz_squared = new_z - old_z |> math.pow(2)
+
+  expect Some(difference) = math.sqrt(dx_squared + dy_squared + dz_squared)
+
+  difference < cmds_count * max_distance_diff
 }

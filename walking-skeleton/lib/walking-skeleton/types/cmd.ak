@@ -17,5 +17,5 @@ pub type Button {
 
 pub type Redeemer {
   Admin
-  Player(Cmd)
+  Player(List<Cmd>)
 }

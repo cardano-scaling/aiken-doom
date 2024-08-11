@@ -25,18 +25,16 @@ pub type Stats {
 }
 
 // subset of mobj_t from p_mobj.h:201
+// health: max 200, min 0 (?)
 pub type MapObject {
   position: Position,
   health: Int,
 }
 
 pub type Position {
-  momentum_x: Int,
-  momentum_y: Int,
-  momentum_z: Int,
-  angle: Int,
+  x: Int,
+  y: Int,
   z: Int,
-  floor_z: Int,
 }
 
 // comes from d_player.h:48

@@ -35,6 +35,7 @@ pub fn is_legal_state_transition(
     owner: new_owner,
     player: new_player,
     level: new_level,
+    teleporting,
     ..
   } = new_state
 
@@ -46,7 +47,7 @@ pub fn is_legal_state_transition(
       new_player,
       max_distance_diff,
       list.length(cmds),
-      old_level != new_level,
+      teleporting || old_level != new_level,
     )
   }
 }
@@ -56,15 +57,12 @@ fn is_legal_player_transition(
   new_player: Player,
   max_distance_diff: Int,
   cmds_count: Int,
-  map_change: Bool,
+  teleporting: Bool,
 ) -> Bool {
   let Player { map_object: old_mobj, .. } = old_player
   let Player { map_object: mew_mobj, .. } = new_player
 
-  trace @"map_change"
-  trace cbor.diagnostic(map_change)
-
-  map_change || is_legal_mobj_transition(
+  teleporting || is_legal_mobj_transition(
     old_mobj,
     mew_mobj,
     max_distance_diff,

@@ -1,4 +1,3 @@
-use aiken/cbor
 use aiken/transaction/credential.{PaymentCredential}
 
 pub type GameData {
@@ -9,6 +8,7 @@ pub type GameData {
   monsters: List<MapObject>,
   leveltime: List<Int>,
   level: LevelId,
+  teleporting: Bool,
 }
 
 // subset of player_t from d_player.h:78 (total_stats and level_stats are not in the original struct, but added for our needs)

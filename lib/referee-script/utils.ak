@@ -1,4 +1,3 @@
-use aiken/builtin
 use aiken/collection/list
 use cardano/transaction.{InlineDatum, Output}
 use referee_script/types.{GameData}

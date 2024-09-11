@@ -51,7 +51,7 @@ validator referee_script(max_players: Int) {
         }
       }
 
-      _ -> todo
+      _ -> False // todo
     }
   }
 

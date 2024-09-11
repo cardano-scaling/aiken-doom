@@ -1,10 +1,55 @@
-# Sundae DOOM
+# referee-script
 
-This is a collection of on-chain validators for the Hydra DOOM project. This repository is a work in progress and will continue to be updated.
+Write validators in the `validators` folder, and supporting functions in the `lib` folder using `.ak` as a file extension.
 
+For example, as `validators/always_true.ak`
 
-## movement-validator
-The movement validator was a basic proof-of-concept aiken validator to introduce how we may store game state on chain and validate state transitions. It was not planned to be included in any final implementation, but instead to think out some basic concepts.
+```ak
+validator {
+  fn spend(_datum: Data, _redeemer: Data, _context: Data) -> Bool {
+    True
+  }
+}
+```
 
-## walking-skeleton
-This is the on-chain code for the walking skeleton of the Hydra DOOM project. Work in progress.
+## Building
+
+```sh
+aiken build
+```
+
+## Testing
+
+You can write tests in any module using the `test` keyword. For example:
+
+```gleam
+test foo() {
+  1 + 1 == 2
+}
+```
+
+To run all tests, simply do:
+
+```sh
+aiken check
+```
+
+To run only tests matching the string `foo`, do:
+
+```sh
+aiken check -m foo
+```
+
+## Documentation
+
+If you're writing a library, you might want to generate an HTML documentation for it.
+
+Use:
+
+```sh
+aiken docs
+```
+
+## Resources
+
+Find more on the [Aiken's user manual](https://aiken-lang.org).

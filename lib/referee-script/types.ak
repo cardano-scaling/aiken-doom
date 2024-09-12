@@ -5,6 +5,7 @@ pub type GameData {
   players: List<PaymentCredential>,
   state: State,
   winner: Option<PaymentCredential>,
+  cheater: Option<PaymentCredential>,
 }
 
 pub type State {

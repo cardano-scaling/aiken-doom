@@ -21,6 +21,6 @@ pub type Redeemer {
 
 pub type SpendAction {
   AddPlayer
-  StartGame
   EndGame
+  Collect
 }

@@ -9,7 +9,6 @@ pub type GameData {
 }
 
 pub type State {
-  Lobby
   Running
   Cheated
   Finished

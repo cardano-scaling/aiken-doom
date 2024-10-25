@@ -1,6 +1,6 @@
 name = "sundae/referee-script"
 version = "0.0.0"
-compiler = "v1.1.1"
+compiler = "v1.1.5"
 plutus = "v2"
 license = "Apache-2.0"
 description = "Aiken contracts for project 'sundae/referee-script'"

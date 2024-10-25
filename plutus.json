@@ -1,0 +1,222 @@
+{
+  "preamble": {
+    "title": "sundae/referee-script",
+    "description": "Aiken contracts for project 'sundae/referee-script'",
+    "version": "0.0.0",
+    "plutusVersion": "v2",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.5+a7741ec"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "referee.referee_script.spend",
+      "datum": {
+        "title": "maybe_datum",
+        "schema": {
+          "$ref": "#/definitions/referee_script~1types~1GameData"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/referee_script~1types~1Redeemer"
+        }
+      },
+      "parameters": [
+        {
+          "title": "max_players",
+          "schema": {
+            "$ref": "#/definitions/Int"
+          }
+        }
+      ],
+      "compiledCode": "5906250100003232323232323223225333004323232323253323300a3001300b37540042646464a6646601c6002601e6ea801c4c8c8c8c94ccc054c0600084c8c8c94ccc054c02000454ccc060c05cdd50020a8010b0a99980a98060008a99980c180b9baa004150021615333015300300115333018301737540082a0042c2c602a6ea800c54ccc04cc018c050dd5003899191919191919191919299980e9808180f1baa00113232323232323232323232323232323232323232532323330333026005132533303430030131533303433712664600200244a66607200229000099b8048008cc008008c0f00040300c84c94ccc0d4cc0040588cc01803800454ccc0d4cc00400894ccc0d8c0a4c0dcdd500089980380f9bae303b303837540022c2a66606a66ebc04802454ccc0d4cdd780a0058a99981a9801807899baf01100814a029405280a5014a044646600200200644a66607600229444c94ccc0e4c010c0f80084cc00c00c004528181f0008a5014a066646002002444a6660720022004266600600664646600200200844a666078002297ae013232533303b3375e00400a200226607e004660080080026080004607c002607600260780020280162a666066605400a2a666066604c60686ea80344c94ccc0d0c00c02854ccc0d0cdd78088040a99981a19baf374e02a6e9c03054ccc0d0c00803854ccc0d0cdd780800389980280e8008a5014a029405280a50375c6070606a6ea80345854ccc0ccc098c0d0dd5006899299981a18018098a99981a19baf374e02a6e9c03054ccc0d0c00803854ccc0d0cc01407400454ccc0d0c0acc0d4dd50040a99981a1813981a9baa00713253330353375e016980103d87a8000153330353375e01202426600a01a0022940528181c981b1baa0071613253330353375e01698103d87b8000153330353375e01002226600a01a0022940528181c981b1baa00814a029405280a50375c6070606a6ea803458dd7981b80a9baf4c103d879800022323300100100322533303700114a0264a66606a66ebcc0e8008010528899801801800981d00091191980080080191299981b0008a5013253330343371e6eb8c0e4008010528899801801800981c80098179baa0143032303300230310013031002302f001302f0023758605a002605a0046056002604e6ea8c8c8c8c8c94ccc0a8c074c0acdd500089919299981619baf30310020041533302c301a302d3754002264a66605a6040605c6ea80044c8c8c8c8c8c8c8c8c8c94ccc0e8c0f40084cc0480244c8cc00400402088c94ccc0f40084c8c94ccc0f0c0bc00454ccc0fcc0f8dd50050a8010b0a99981e18198008a99981f981f1baa00a15002161533303c302a0011533303f303e37540142a0042c2c60786ea80244cc0500184cc05001040384cc054c0fc0084c004c100008c00800858c0ec004c0ec008c0e4004c0e4008c0dc004c0dc008dd6181a800981a801181980098179baa001163031302e37540022c2c60606062606200260586ea8c0bcc0b0dd50008b199801001009808180698151baa302d302e302a3754605a60546ea80308894ccc0b4008530103d87a800013232533302c301f00313374a90001981800125eb804ccc014014004cdc0001a40026062006605e0044464a666052603800226464a66605c606200426600c0022a0082c605e00260566ea800c54ccc0a4c08000454ccc0b0c0acdd50018a8010b0b18149baa00222325333028301b00113232533302d30300021500416375c605c00260546ea800c54ccc0a0c07c0044c8c94ccc0b4c0c00085401058dd7181700098151baa00316302837540046052605400460500026050004604c002604c0046eb0c090004c090004c07cdd50050b19198008009bac302200922533302100114c0103d87a80001323253330203375e600a60446ea80080544cdd2a40006604800497ae01330040040013025002302300123021001301f3020002375a603c00260346ea8044dd6180e180e980e980e980e980e980e8011bac301b001301b301b0013016375401e6030602a6ea801c58dc3a40082c602c002602c0046eb4c050004c040dd50039b874800058c044c048008c040004c030dd50011b874800858c034c038008c030004c030008c028004c018dd50008a4c26cac6eb40055cd2ab9d5573caae7d5d02ba157441",
+      "hash": "e488c3ec1ebc5022f6c67d2de11ba6c8a3ef2c63b9970964cfb912ce"
+    },
+    {
+      "title": "referee.referee_script.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "max_players",
+          "schema": {
+            "$ref": "#/definitions/Int"
+          }
+        }
+      ],
+      "compiledCode": "5906250100003232323232323223225333004323232323253323300a3001300b37540042646464a6646601c6002601e6ea801c4c8c8c8c94ccc054c0600084c8c8c94ccc054c02000454ccc060c05cdd50020a8010b0a99980a98060008a99980c180b9baa004150021615333015300300115333018301737540082a0042c2c602a6ea800c54ccc04cc018c050dd5003899191919191919191919299980e9808180f1baa00113232323232323232323232323232323232323232532323330333026005132533303430030131533303433712664600200244a66607200229000099b8048008cc008008c0f00040300c84c94ccc0d4cc0040588cc01803800454ccc0d4cc00400894ccc0d8c0a4c0dcdd500089980380f9bae303b303837540022c2a66606a66ebc04802454ccc0d4cdd780a0058a99981a9801807899baf01100814a029405280a5014a044646600200200644a66607600229444c94ccc0e4c010c0f80084cc00c00c004528181f0008a5014a066646002002444a6660720022004266600600664646600200200844a666078002297ae013232533303b3375e00400a200226607e004660080080026080004607c002607600260780020280162a666066605400a2a666066604c60686ea80344c94ccc0d0c00c02854ccc0d0cdd78088040a99981a19baf374e02a6e9c03054ccc0d0c00803854ccc0d0cdd780800389980280e8008a5014a029405280a50375c6070606a6ea80345854ccc0ccc098c0d0dd5006899299981a18018098a99981a19baf374e02a6e9c03054ccc0d0c00803854ccc0d0cc01407400454ccc0d0c0acc0d4dd50040a99981a1813981a9baa00713253330353375e016980103d87a8000153330353375e01202426600a01a0022940528181c981b1baa0071613253330353375e01698103d87b8000153330353375e01002226600a01a0022940528181c981b1baa00814a029405280a50375c6070606a6ea803458dd7981b80a9baf4c103d879800022323300100100322533303700114a0264a66606a66ebcc0e8008010528899801801800981d00091191980080080191299981b0008a5013253330343371e6eb8c0e4008010528899801801800981c80098179baa0143032303300230310013031002302f001302f0023758605a002605a0046056002604e6ea8c8c8c8c8c94ccc0a8c074c0acdd500089919299981619baf30310020041533302c301a302d3754002264a66605a6040605c6ea80044c8c8c8c8c8c8c8c8c8c94ccc0e8c0f40084cc0480244c8cc00400402088c94ccc0f40084c8c94ccc0f0c0bc00454ccc0fcc0f8dd50050a8010b0a99981e18198008a99981f981f1baa00a15002161533303c302a0011533303f303e37540142a0042c2c60786ea80244cc0500184cc05001040384cc054c0fc0084c004c100008c00800858c0ec004c0ec008c0e4004c0e4008c0dc004c0dc008dd6181a800981a801181980098179baa001163031302e37540022c2c60606062606200260586ea8c0bcc0b0dd50008b199801001009808180698151baa302d302e302a3754605a60546ea80308894ccc0b4008530103d87a800013232533302c301f00313374a90001981800125eb804ccc014014004cdc0001a40026062006605e0044464a666052603800226464a66605c606200426600c0022a0082c605e00260566ea800c54ccc0a4c08000454ccc0b0c0acdd50018a8010b0b18149baa00222325333028301b00113232533302d30300021500416375c605c00260546ea800c54ccc0a0c07c0044c8c94ccc0b4c0c00085401058dd7181700098151baa00316302837540046052605400460500026050004604c002604c0046eb0c090004c090004c07cdd50050b19198008009bac302200922533302100114c0103d87a80001323253330203375e600a60446ea80080544cdd2a40006604800497ae01330040040013025002302300123021001301f3020002375a603c00260346ea8044dd6180e180e980e980e980e980e980e8011bac301b001301b301b0013016375401e6030602a6ea801c58dc3a40082c602c002602c0046eb4c050004c040dd50039b874800058c044c048008c040004c030dd50011b874800858c034c038008c030004c030008c028004c018dd50008a4c26cac6eb40055cd2ab9d5573caae7d5d02ba157441",
+      "hash": "e488c3ec1ebc5022f6c67d2de11ba6c8a3ef2c63b9970964cfb912ce"
+    }
+  ],
+  "definitions": {
+    "Int": {
+      "dataType": "integer"
+    },
+    "List$PaymentCredential": {
+      "dataType": "list",
+      "items": {
+        "$ref": "#/definitions/PaymentCredential"
+      }
+    },
+    "Option$PaymentCredential": {
+      "title": "Option",
+      "anyOf": [
+        {
+          "title": "Some",
+          "description": "An optional value.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/PaymentCredential"
+            }
+          ]
+        },
+        {
+          "title": "None",
+          "description": "Nothing.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "PaymentCredential": {
+      "title": "PaymentCredential",
+      "description": "A general structure for representing an on-chain `Credential`.\n\n Credentials are always one of two kinds: a direct public/private key\n pair, or a script (native or Plutus).",
+      "anyOf": [
+        {
+          "title": "VerificationKey",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "Script",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "$ref": "#/definitions/ScriptHash"
+            }
+          ]
+        }
+      ]
+    },
+    "ScriptHash": {
+      "title": "ScriptHash",
+      "dataType": "bytes"
+    },
+    "VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "referee_script/types/GameData": {
+      "title": "GameData",
+      "anyOf": [
+        {
+          "title": "GameData",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "referee",
+              "$ref": "#/definitions/PaymentCredential"
+            },
+            {
+              "title": "players",
+              "$ref": "#/definitions/List$PaymentCredential"
+            },
+            {
+              "title": "state",
+              "$ref": "#/definitions/referee_script~1types~1State"
+            },
+            {
+              "title": "winner",
+              "$ref": "#/definitions/Option$PaymentCredential"
+            },
+            {
+              "title": "cheater",
+              "$ref": "#/definitions/Option$PaymentCredential"
+            }
+          ]
+        }
+      ]
+    },
+    "referee_script/types/Redeemer": {
+      "title": "Redeemer",
+      "anyOf": [
+        {
+          "title": "Redeemer",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "new_state_index",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "action",
+              "$ref": "#/definitions/referee_script~1types~1SpendAction"
+            }
+          ]
+        }
+      ]
+    },
+    "referee_script/types/SpendAction": {
+      "title": "SpendAction",
+      "anyOf": [
+        {
+          "title": "AddPlayer",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "StartGame",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "EndGame",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    },
+    "referee_script/types/State": {
+      "title": "State",
+      "anyOf": [
+        {
+          "title": "Running",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Cheated",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "Finished",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

@@ -2,7 +2,7 @@ use aiken/collection/list
 use cardano/address.{VerificationKey}
 use cardano/transaction.{Input, OutputReference, Transaction}
 use referee_script/types.{
-  AddPlayer, Cheated, EndGame, Finished, GameData, Lobby, Redeemer, Running,
+  AddPlayer, Cheated, EndGame, Finished, GameData, Redeemer, Running,
   StartGame,
 }
 use referee_script/utils.{get_new_state, is_subset}
@@ -39,7 +39,7 @@ validator referee_script(max_players: Int) {
       AddPlayer -> {
         let added_players = list.difference(old_players, new_players)
         and {
-          old_state == Lobby,
+          old_state == Running,
           list.length(new_players) <= max_players,
           is_subset(old_players, new_players),
           list.all(
@@ -60,7 +60,6 @@ validator referee_script(max_players: Int) {
       StartGame -> {
         expect VerificationKey(cred) = new_referee
         and {
-          old_state == Lobby,
           new_state == Running,
           old_winner == new_winner,
           old_players == new_players,

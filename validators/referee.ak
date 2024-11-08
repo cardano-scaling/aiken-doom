@@ -35,19 +35,10 @@ validator referee_script(max_players: Int) {
     } = new_state
 
     when action is {
-      AddPlayer -> {
-        let added_players = list.difference(old_players, new_players)
-        and {
+      AddPlayer -> and {
           old_state == Running,
           list.length(new_players) <= max_players,
           is_subset(old_players, new_players),
-          list.all(
-            added_players,
-            fn(player) {
-              expect VerificationKey(cred) = player
-              list.has(extra_signatories, cred)
-            },
-          ),
           and {
             old_winner == new_winner,
             old_state == new_state,
@@ -55,10 +46,8 @@ validator referee_script(max_players: Int) {
             old_cheater == new_cheater,
           },
         }
-      }
       EndGame -> {
         expect VerificationKey(cred) = new_referee
-
         and {
           old_state == Running,
           old_players == new_players,

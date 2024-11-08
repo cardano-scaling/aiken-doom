@@ -18,7 +18,6 @@ validator referee_script(max_players: Int) {
     let Redeemer { new_state_index, action } = redeemer
     expect Some(spent_input) = transaction.find_input(inputs, utxo)
     let Input { output: spent_output, .. } = spent_input
-    let new_state = get_new_state(new_state_index, outputs, spent_output)
     let GameData {
       players: old_players,
       winner: old_winner,
@@ -26,16 +25,19 @@ validator referee_script(max_players: Int) {
       referee: old_referee,
       cheater: old_cheater,
     } = old_state
-    let GameData {
-      players: new_players,
-      winner: new_winner,
-      state: new_state,
-      referee: new_referee,
-      cheater: new_cheater,
-    } = new_state
 
     when action is {
-      AddPlayer -> and {
+      AddPlayer -> {
+        let new_state = get_new_state(new_state_index, outputs, spent_output)
+        let GameData {
+          players: new_players,
+          winner: new_winner,
+          state: new_state,
+          referee: new_referee,
+          cheater: new_cheater,
+        } = new_state
+
+        and {
           old_state == Running,
           list.length(new_players) <= max_players,
           is_subset(old_players, new_players),
@@ -46,7 +48,16 @@ validator referee_script(max_players: Int) {
             old_cheater == new_cheater,
           },
         }
+      }
       EndGame -> {
+        let new_state = get_new_state(new_state_index, outputs, spent_output)
+        let GameData {
+          players: new_players,
+          winner: new_winner,
+          state: new_state,
+          referee: new_referee,
+          cheater: new_cheater,
+        } = new_state
         expect VerificationKey(cred) = new_referee
         and {
           old_state == Running,
@@ -71,17 +82,12 @@ validator referee_script(max_players: Int) {
         }
       }
       Collect -> {
-        expect VerificationKey(cred) = new_referee
+        expect VerificationKey(cred) = old_referee
         and {
           or {
             old_state == Finished,
             old_state == Cheated,
           },
-          old_state == new_state,
-          old_players == new_players,
-          old_winner == new_winner,
-          old_referee == new_referee,
-          old_cheater == new_cheater,
           list.has(extra_signatories, cred),
         }
       }

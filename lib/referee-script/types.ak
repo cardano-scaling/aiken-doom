@@ -9,6 +9,7 @@ pub type GameData {
 }
 
 pub type State {
+  Lobby
   Running
   Cheated
   Finished
@@ -21,6 +22,7 @@ pub type Redeemer {
 
 pub type SpendAction {
   AddPlayer
+  StartGame
   EndGame
   Collect
 }

@@ -2,7 +2,8 @@ use aiken/collection/list
 use cardano/address.{VerificationKey}
 use cardano/transaction.{Input, OutputReference, Transaction}
 use referee_script/types.{
-  AddPlayer, Cheated, Collect, EndGame, Finished, GameData, Redeemer, Running,
+  AddPlayer, Cheated, Collect, EndGame, Finished, GameData, Lobby, Redeemer,
+  Running, StartGame,
 }
 use referee_script/utils.{get_new_state, is_subset}
 
@@ -38,7 +39,7 @@ validator referee_script(max_players: Int) {
         } = new_state
 
         and {
-          old_state == Running,
+          old_state == Lobby,
           list.length(new_players) <= max_players,
           is_subset(old_players, new_players),
           and {
@@ -49,6 +50,28 @@ validator referee_script(max_players: Int) {
           },
         }
       }
+      StartGame -> {
+        let new_state = get_new_state(new_state_index, outputs, spent_output)
+        let GameData {
+          players: new_players,
+          winner: new_winner,
+          state: new_state,
+          referee: new_referee,
+          cheater: new_cheater,
+        } = new_state
+        expect VerificationKey(cred) = new_referee
+
+        and {
+          old_state == Lobby,
+          new_state == Running,
+          old_players == new_players,
+          old_referee == new_referee,
+          old_winner == new_winner,
+          old_cheater == new_cheater,
+          list.has(extra_signatories, cred),
+        }
+      }
+
       EndGame -> {
         let new_state = get_new_state(new_state_index, outputs, spent_output)
         let GameData {
@@ -59,6 +82,7 @@ validator referee_script(max_players: Int) {
           cheater: new_cheater,
         } = new_state
         expect VerificationKey(cred) = new_referee
+
         and {
           old_state == Running,
           old_players == new_players,

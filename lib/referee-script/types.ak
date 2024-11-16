@@ -13,6 +13,7 @@ pub type State {
   Running
   Cheated
   Finished
+  Aborted
 }
 
 pub type Redeemer {

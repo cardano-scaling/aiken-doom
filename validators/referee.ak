@@ -2,8 +2,8 @@ use aiken/collection/list
 use cardano/address.{VerificationKey}
 use cardano/transaction.{Input, OutputReference, Transaction}
 use referee_script/types.{
-  AddPlayer, Cheated, Collect, EndGame, Finished, GameData, Lobby, Redeemer,
-  Running, StartGame,
+  Aborted, AddPlayer, Cheated, Collect, EndGame, Finished, GameData, Lobby,
+  Redeemer, Running, StartGame,
 }
 use referee_script/utils.{get_new_state, is_subset}
 
@@ -88,29 +88,43 @@ validator referee_script(max_players: Int) {
           old_players == new_players,
           old_referee == new_referee,
           list.has(extra_signatories, cred),
-          when new_winner is {
-            None -> {
+          when new_state is {
+            Cheated -> {
               expect Some(cheater) = new_cheater
+              expect None = new_winner
               and {
-                new_state == Cheated,
                 new_winner == old_winner,
                 list.has(new_players, cheater),
               }
             }
-            Some(winner) -> and {
-                new_state == Finished,
+            Finished -> {
+              expect Some(winner) = new_winner
+              expect None = old_cheater
+              and {
                 new_cheater == old_cheater,
                 list.has(new_players, winner),
               }
+            }
+            Aborted -> {
+              expect None = new_winner
+              expect None = new_cheater
+              and {
+                new_cheater == old_cheater,
+                new_winner == old_winner,
+              }
+            }
+            _ -> fail @"invalid new state"
           },
         }
       }
+
       Collect -> {
         expect VerificationKey(cred) = old_referee
         and {
           or {
             old_state == Finished,
             old_state == Cheated,
+            old_state == Aborted,
           },
           list.has(extra_signatories, cred),
         }

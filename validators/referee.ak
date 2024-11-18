@@ -105,14 +105,13 @@ validator referee_script(max_players: Int) {
                 list.has(new_players, winner),
               }
             }
-            Aborted -> {
-              expect None = new_winner
-              expect None = new_cheater
-              and {
-                new_cheater == old_cheater,
-                new_winner == old_winner,
+            Aborted -> and {
+                new_winner == None,
+                new_cheater == None,
+                old_cheater == new_cheater,
+                old_winner == new_winner,
               }
-            }
+
             _ -> fail @"invalid new state"
           },
         }

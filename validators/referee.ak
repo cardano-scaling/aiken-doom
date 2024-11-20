@@ -84,7 +84,6 @@ validator referee_script(max_players: Int) {
         expect VerificationKey(cred) = new_referee
 
         and {
-          old_state == Running,
           old_players == new_players,
           old_referee == new_referee,
           list.has(extra_signatories, cred),
@@ -93,6 +92,7 @@ validator referee_script(max_players: Int) {
               expect Some(cheater) = new_cheater
               expect None = new_winner
               and {
+                old_state == Running,
                 new_winner == old_winner,
                 list.has(new_players, cheater),
               }
@@ -101,11 +101,16 @@ validator referee_script(max_players: Int) {
               expect Some(winner) = new_winner
               expect None = old_cheater
               and {
+                old_state == Running,
                 new_cheater == old_cheater,
                 list.has(new_players, winner),
               }
             }
             Aborted -> and {
+                or {
+                  old_state == Lobby,
+                  old_state == Running,
+                },
                 new_winner == None,
                 new_cheater == None,
                 old_cheater == new_cheater,

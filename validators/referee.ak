@@ -25,6 +25,8 @@ validator referee_script(max_players: Int) {
       state: old_state,
       referee: old_referee,
       cheater: old_cheater,
+      player_count: old_player_count,
+      bot_count: old_bot_count,
     } = old_state
 
     when action is {
@@ -36,6 +38,8 @@ validator referee_script(max_players: Int) {
           state: new_state,
           referee: new_referee,
           cheater: new_cheater,
+          player_count: new_player_count,
+          bot_count: new_bot_count,
         } = new_state
 
         and {
@@ -47,6 +51,8 @@ validator referee_script(max_players: Int) {
             old_state == new_state,
             old_referee == new_referee,
             old_cheater == new_cheater,
+            old_player_count == new_player_count,
+            old_bot_count == new_bot_count,
           },
         }
       }
@@ -58,6 +64,8 @@ validator referee_script(max_players: Int) {
           state: new_state,
           referee: new_referee,
           cheater: new_cheater,
+          player_count: new_player_count,
+          bot_count: new_bot_count,
         } = new_state
         expect VerificationKey(cred) = new_referee
 
@@ -68,6 +76,8 @@ validator referee_script(max_players: Int) {
           old_referee == new_referee,
           old_winner == new_winner,
           old_cheater == new_cheater,
+          old_player_count == new_player_count,
+          old_bot_count == new_bot_count,
           list.has(extra_signatories, cred),
         }
       }
@@ -80,12 +90,16 @@ validator referee_script(max_players: Int) {
           state: new_state,
           referee: new_referee,
           cheater: new_cheater,
+          player_count: new_player_count,
+          bot_count: new_bot_count,
         } = new_state
         expect VerificationKey(cred) = new_referee
 
         and {
           old_players == new_players,
           old_referee == new_referee,
+          old_player_count == new_player_count,
+          old_bot_count == new_bot_count,
           list.has(extra_signatories, cred),
           when new_state is {
             Cheated -> {

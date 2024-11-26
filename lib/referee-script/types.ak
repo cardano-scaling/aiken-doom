@@ -2,6 +2,8 @@ use cardano/address.{PaymentCredential}
 
 pub type GameData {
   referee: PaymentCredential,
+  player_count: Int,
+  bot_count: Int,
   players: List<PaymentCredential>,
   state: State,
   winner: Option<PaymentCredential>,

@@ -12,7 +12,7 @@
   },
   "validators": [
     {
-      "title": "manager.manager.spend",
+      "title": "finale.manager.spend",
       "datum": {
         "title": "datum",
         "schema": {
@@ -43,7 +43,7 @@
       "hash": "7242ec44a8849ace2276c1003057d79596141b4977513c7a2f6e1200"
     },
     {
-      "title": "manager.manager.else",
+      "title": "finale.manager.else",
       "redeemer": {
         "schema": {}
       },

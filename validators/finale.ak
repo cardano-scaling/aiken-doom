@@ -7,10 +7,8 @@ use cardano/assets.{PolicyId}
 use cardano/transaction.{
   InlineDatum, Input, Output, OutputReference, Transaction,
 }
+use finale/types.{Distribute, Finished, Packet, Redeemer, Series, StoreGame}
 use finale/utils.{unique}
-use finale/types.{
-  Distribute, Finished, Game, Redeemer, Series, StoreGame,
-}
 
 validator manager(policy_id: PolicyId, admin: PaymentCredential) {
   spend(
@@ -60,7 +58,7 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
               expect VerificationKey(player_kh) = payment_credential
 
               expect InlineDatum(raw_datum) = datum
-              expect game: Game = raw_datum
+              expect game: Packet = raw_datum
               expect game.state == Finished
               expect list.is_empty(acc.1st) || acc.1st == game.kills
               (game.kills, list.push(acc.2nd, player_kh))

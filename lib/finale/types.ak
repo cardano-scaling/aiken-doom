@@ -21,7 +21,7 @@ pub type State {
   Aborted
 }
 
-pub type Game {
+pub type Packet {
   to: Int,
   from: Int,
   ephemeral_key: VerificationKeyHash,

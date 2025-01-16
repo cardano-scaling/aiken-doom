@@ -21,11 +21,6 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
       self
     expect Some(spent_input) = inputs |> transaction.find_input(utxo_ref)
     let Input { output: spent_output, .. } = spent_input
-    expect Some(new_output) =
-      list.find(outputs, fn(output) { output.address == spent_output.address })
-    let Output { datum: output_datum, .. } = new_output
-    expect InlineDatum(raw_datum) = output_datum
-    expect new_datum: Series = raw_datum
     expect Some(old_datum) = datum
 
     let Series {
@@ -34,17 +29,27 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
       pkhs: old_pkhs,
       nft_names: old_nft_names,
     } = old_datum
-    let Series {
-      finished_games: new_games,
-      kills: new_kills,
-      pkhs: new_pkhs,
-      nft_names: new_nft_names,
-    } = new_datum
 
     expect VerificationKey(admin_kh) = admin
 
     when redeemer is {
       StoreGame -> {
+        expect Some(new_output) =
+          list.find(
+            outputs,
+            fn(output) { output.address == spent_output.address },
+          )
+        let Output { datum: output_datum, .. } = new_output
+        expect InlineDatum(raw_datum) = output_datum
+        expect new_datum: Series = raw_datum
+
+        let Series {
+          finished_games: new_games,
+          kills: new_kills,
+          pkhs: new_pkhs,
+          nft_names: new_nft_names,
+        } = new_datum
+
         expect old_games < 3 && old_games >= 0
         expect new_games == old_games + 1
 
@@ -106,7 +111,7 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
                   left: (VerificationKeyHash, Int),
                   right: (VerificationKeyHash, Int),
                 ) {
-                  int.compare(left.2nd, right.2nd)
+                  int.compare(right.2nd, left.2nd)
                 },
               )
 
@@ -124,7 +129,6 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
 
                     let Address { payment_credential, .. } = address
                     expect VerificationKey(pkh) = payment_credential
-
                     expect player == pkh
                   }
                   None -> Void

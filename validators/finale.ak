@@ -20,11 +20,13 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
     let Transaction { inputs, outputs, reference_inputs, extra_signatories, .. } =
       self
     expect Some(spent_input) = inputs |> transaction.find_input(utxo_ref)
-    let Input { output, .. } = spent_input
-    let Output { datum: output_datum, .. } = output
+    let Input { output: spent_output, .. } = spent_input
+    expect Some(new_output) =
+      list.find(outputs, fn(output) { output.address == spent_output.address })
+    let Output { datum: output_datum, .. } = new_output
     expect InlineDatum(raw_datum) = output_datum
-    expect old_datum: Series = raw_datum
-    expect Some(new_datum) = datum
+    expect new_datum: Series = raw_datum
+    expect Some(old_datum) = datum
 
     let Series {
       finished_games: old_games,

@@ -3,14 +3,14 @@ use aiken/collection/list
 use aiken/crypto.{VerificationKeyHash}
 use aiken/primitive/int
 use cardano/address.{Address, PaymentCredential, VerificationKey}
-use cardano/assets.{PolicyId}
+use cardano/assets
 use cardano/transaction.{
   InlineDatum, Input, Output, OutputReference, Transaction,
 }
 use finale/types.{Distribute, Finished, Packet, Redeemer, Series, StoreGame}
 use finale/utils.{unique}
 
-validator manager(policy_id: PolicyId, admin: PaymentCredential) {
+validator manager(admin: PaymentCredential) {
   spend(
     datum: Option<Series>,
     redeemer: Redeemer,
@@ -27,7 +27,7 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
       finished_games: old_games,
       kills: old_kills,
       pkhs: old_pkhs,
-      nft_names: old_nft_names,
+      policies: old_policies,
     } = old_datum
 
     expect VerificationKey(admin_kh) = admin
@@ -47,7 +47,7 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
           finished_games: new_games,
           kills: new_kills,
           pkhs: new_pkhs,
-          nft_names: new_nft_names,
+          policies: new_policies,
         } = new_datum
 
         expect old_games < 3 && old_games >= 0
@@ -90,7 +90,7 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
             ),
           },
           old_pkhs == new_pkhs,
-          old_nft_names == new_nft_names,
+          old_policies == new_policies,
         }
       }
 
@@ -120,19 +120,23 @@ validator manager(policy_id: PolicyId, admin: PaymentCredential) {
               fn(output) {
                 let Output { value, address, .. } = output
                 let value = assets.to_dict(value)
-                when dict.get(value, policy_id) is {
-                  Some(assets) -> {
-                    expect dict.size(assets) == 1
-                    expect Some(name) = list.head(dict.keys(assets))
-                    expect Some(index) = list.index_of(old_nft_names, name)
-                    expect Some((player, _)) = list.at(pkh_kills, index)
+                list.for_each(
+                  old_policies,
+                  fn(policy_id) {
+                    when dict.get(value, policy_id) is {
+                      Some(_) -> {
+                        expect Some(index) =
+                          list.index_of(old_policies, policy_id)
+                        expect Some((player, _)) = list.at(pkh_kills, index)
 
-                    let Address { payment_credential, .. } = address
-                    expect VerificationKey(pkh) = payment_credential
-                    expect player == pkh
-                  }
-                  None -> Void
-                }
+                        let Address { payment_credential, .. } = address
+                        expect VerificationKey(pkh) = payment_credential
+                        expect player == pkh
+                      }
+                      None -> Void
+                    }
+                  },
+                )
               },
             )
 

@@ -34,10 +34,10 @@ validator prize(admin: PaymentCredential, utxo: OutputReference) {
   mint(_: Data, policy_id: PolicyId, self: Transaction) {
     let Transaction { inputs, mint, .. } = self
     let minted_assets = mint |> assets.tokens(policy_id) |> dict.to_pairs()
-    list.any(inputs, fn(input) { input.output_reference == utxo }) && list.all(
-      pairs.values(minted_assets),
-      fn(count) { count == 1 },
-    )
+    and {
+      list.any(inputs, fn(input) { input.output_reference == utxo }),
+      list.all(pairs.values(minted_assets), fn(count) { count == 1 }),
+    }
   }
 
   else(_) {

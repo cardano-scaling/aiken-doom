@@ -1,11 +1,11 @@
 use aiken/crypto.{VerificationKeyHash}
-use cardano/assets.{AssetName}
+use cardano/assets.{PolicyId}
 
 pub type Series {
   finished_games: Int,
   kills: List<Int>,
   pkhs: List<VerificationKeyHash>,
-  nft_names: List<AssetName>,
+  policies: List<PolicyId>,
 }
 
 pub type Redeemer {

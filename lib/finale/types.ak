@@ -5,6 +5,7 @@ pub type Series {
   finished_games: Int,
   kills: List<Int>,
   pkhs: List<VerificationKeyHash>,
+  distribute_pkhs: List<VerificationKeyHash>,
   policies: List<PolicyId>,
 }
 

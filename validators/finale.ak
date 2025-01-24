@@ -55,7 +55,6 @@ validator manager(admin: PaymentCredential) {
         expect old_games < 3 && old_games >= 0
         expect new_games == old_games + 1
 
-        expect list.length(reference_inputs) == 4
         let (kills, players) =
           list.reduce(
             reference_inputs,

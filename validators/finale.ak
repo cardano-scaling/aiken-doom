@@ -27,6 +27,7 @@ validator manager(admin: PaymentCredential) {
       finished_games: old_games,
       kills: old_kills,
       pkhs: old_pkhs,
+      distribute_pkhs: old_distribute_pkhs,
       policies: old_policies,
     } = old_datum
 
@@ -47,6 +48,7 @@ validator manager(admin: PaymentCredential) {
           finished_games: new_games,
           kills: new_kills,
           pkhs: new_pkhs,
+          distribute_pkhs: new_distribute_pkhs,
           policies: new_policies,
         } = new_datum
 
@@ -90,6 +92,7 @@ validator manager(admin: PaymentCredential) {
             ),
           },
           old_pkhs == new_pkhs,
+          old_distribute_pkhs == new_distribute_pkhs,
           old_policies == new_policies,
         }
       }
@@ -101,7 +104,7 @@ validator manager(admin: PaymentCredential) {
             let pkh_kills =
               list.sort(
                 list.indexed_map(
-                  old_pkhs,
+                  old_distribute_pkhs,
                   fn(i, pkh) {
                     expect Some(kills) = list.at(old_kills, i)
                     (pkh, kills)
@@ -127,11 +130,11 @@ validator manager(admin: PaymentCredential) {
                       Some(_) -> {
                         expect Some(index) =
                           list.index_of(old_policies, policy_id)
-                        expect Some((player, _)) = list.at(pkh_kills, index)
+                        expect Some((distribute, _)) = list.at(pkh_kills, index)
 
                         let Address { payment_credential, .. } = address
                         expect VerificationKey(pkh) = payment_credential
-                        expect player == pkh
+                        expect distribute == pkh
                       }
                       None -> Void
                     }

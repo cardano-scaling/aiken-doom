@@ -55,21 +55,20 @@ validator manager(admin: PaymentCredential) {
         expect old_games < 3 && old_games >= 0
         expect new_games == old_games + 1
 
-        let (kills, players) =
+        let kills =
           list.reduce(
             reference_inputs,
-            ([], []),
+            [],
             fn(acc, input) {
               let Input { output, .. } = input
-              let Output { datum, address, .. } = output
-              let Address { payment_credential, .. } = address
-              expect VerificationKey(player_kh) = payment_credential
+              let Output { datum, .. } = output
 
               expect InlineDatum(raw_datum) = datum
-              expect game: Packet = raw_datum
+              expect game_list: List<Packet> = raw_datum
+              expect Some(game) = list.at(game_list, 0)
               expect game.state == Finished
-              expect list.is_empty(acc.1st) || acc.1st == game.kills
-              (game.kills, list.push(acc.2nd, player_kh))
+              expect list.is_empty(acc) || acc == game.kills
+              game.kills
             },
           )
 
@@ -83,70 +82,65 @@ validator manager(admin: PaymentCredential) {
           )
 
         and {
-          or {
-            list.has(extra_signatories, admin_kh),
-            list.all(
-              players,
-              fn(player) { list.has(extra_signatories, player) },
-            ),
-          },
+          list.has(extra_signatories, admin_kh),
           old_pkhs == new_pkhs,
           old_distribute_pkhs == new_distribute_pkhs,
           old_policies == new_policies,
         }
       }
 
-      Distribute -> {
-        expect old_games == 3
-        when unique(old_kills) is {
-          True -> {
-            let pkh_kills =
-              list.sort(
-                list.indexed_map(
-                  old_distribute_pkhs,
-                  fn(i, pkh) {
-                    expect Some(kills) = list.at(old_kills, i)
-                    (pkh, kills)
+      Distribute -> or {
+          list.has(extra_signatories, admin_kh),
+          old_games == 3 && when unique(old_kills) is {
+            True -> {
+              let pkh_kills =
+                list.sort(
+                  list.indexed_map(
+                    old_distribute_pkhs,
+                    fn(i, pkh) {
+                      expect Some(kills) = list.at(old_kills, i)
+                      (pkh, kills)
+                    },
+                  ),
+                  fn(
+                    left: (VerificationKeyHash, Int),
+                    right: (VerificationKeyHash, Int),
+                  ) {
+                    int.compare(right.2nd, left.2nd)
                   },
-                ),
-                fn(
-                  left: (VerificationKeyHash, Int),
-                  right: (VerificationKeyHash, Int),
-                ) {
-                  int.compare(right.2nd, left.2nd)
+                )
+
+              list.for_each(
+                outputs,
+                fn(output) {
+                  let Output { value, address, .. } = output
+                  let value = assets.to_dict(value)
+                  list.for_each(
+                    old_policies,
+                    fn(policy_id) {
+                      when dict.get(value, policy_id) is {
+                        Some(_) -> {
+                          expect Some(index) =
+                            list.index_of(old_policies, policy_id)
+                          expect Some((distribute, _)) =
+                            list.at(pkh_kills, index)
+
+                          let Address { payment_credential, .. } = address
+                          expect VerificationKey(pkh) = payment_credential
+                          expect distribute == pkh
+                        }
+                        None -> Void
+                      }
+                    },
+                  )
                 },
               )
 
-            list.for_each(
-              outputs,
-              fn(output) {
-                let Output { value, address, .. } = output
-                let value = assets.to_dict(value)
-                list.for_each(
-                  old_policies,
-                  fn(policy_id) {
-                    when dict.get(value, policy_id) is {
-                      Some(_) -> {
-                        expect Some(index) =
-                          list.index_of(old_policies, policy_id)
-                        expect Some((distribute, _)) = list.at(pkh_kills, index)
-
-                        let Address { payment_credential, .. } = address
-                        expect VerificationKey(pkh) = payment_credential
-                        expect distribute == pkh
-                      }
-                      None -> Void
-                    }
-                  },
-                )
-              },
-            )
-
-            True
-          }
-          False -> list.has(extra_signatories, admin_kh)
+              True
+            }
+            False -> list.has(extra_signatories, admin_kh)
+          },
         }
-      }
     }
   }
 
